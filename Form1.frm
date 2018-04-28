@@ -19,4 +19,12 @@ Option Explicit
 
 Private Sub Form_Load()
 
+   Dim objValorMonetario As New clsValorMonetario
+
+   MsgBox objValorMonetario.RetornarPorExtenso("1")
+   
+   Unload Me
+
 End Sub
+
+
