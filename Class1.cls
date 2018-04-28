@@ -35,7 +35,7 @@ Public Function RetornarPorExtenso(pstrNumero As Double) As String
    strValorInteiro = RetornarNumeroPorExtenso(lngValorInteiro)
    strValorCentavos = RetornarNumeroPorExtenso(intValorDecimal)
       
-   RetornarPorExtenso = strValorInteiro & " " & IIf(lngValorInteiro = 1, REAL, REAIS) & " e " & strValorCentavos & " " & IIf(intValorDecimal = 1, CENTAVO, CENTAVOS)
+   RetornarPorExtenso = strValorInteiro & " " & IIf(lngValorInteiro = 1, REAL, REAIS) & " E " & strValorCentavos & " " & IIf(intValorDecimal = 1, CENTAVO, CENTAVOS)
 
 End Function
 
@@ -102,7 +102,7 @@ Private Function RetornarNumeroPorExtenso(plngValor As Long) As String
          intValorDezena = plngValor - intValorUnidade
          strTextoDezena = RetornarNumeroPorExtenso(CStr(intValorDezena))
          
-         strTexto = strTextoDezena & " e " & strTextoUnidade
+         strTexto = strTextoDezena & " E " & strTextoUnidade
    End Select
    RetornarNumeroPorExtenso = strTexto
    
