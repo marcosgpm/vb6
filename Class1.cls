@@ -20,16 +20,54 @@ Const MIL As String = "MIL"
 Const MILHAO As String = "MILHAO"
 Const MILHOES As String = "MILHOES"
 
-Public Function RetornarPorExtenso(pstrNumero As String) As String
+Public Function RetornarPorExtenso(pstrNumero As Double) As String
 
    Dim strTexto As String
+   Dim strValorInteiro As String
+   Dim strValorCentavos As String
    Dim lngValorInteiro As Long
-   Dim intValorDecimal As Integer
+   Dim intValorDecimal As Long
+   
    
    lngValorInteiro = RetornarValorInteiro(pstrNumero)
    intValorDecimal = RetornarValorCentavos(pstrNumero)
    
-   Select Case lngValorInteiro
+   strValorInteiro = RetornarNumeroPorExtenso(lngValorInteiro)
+   strValorCentavos = RetornarNumeroPorExtenso(intValorDecimal)
+      
+   RetornarPorExtenso = strValorInteiro & " " & IIf(lngValorInteiro = 1, REAL, REAIS) & " e " & strValorCentavos & " " & IIf(intValorDecimal = 1, CENTAVO, CENTAVOS)
+
+End Function
+
+Private Function RetornarValorCentavos(pstrNumero As Double) As Integer
+   Dim Numero As String
+   
+   If InStr(1, pstrNumero, ",") > 0 Then
+      Numero = pstrNumero & "0"
+      Numero = Mid(Numero, InStr(1, Numero, ",") + 1, 2)
+      RetornarValorCentavos = Numero
+   End If
+End Function
+
+Private Function RetornarValorInteiro(pstrNumero As Double) As Long
+   RetornarValorInteiro = pstrNumero
+   If InStr(1, pstrNumero, ",") > 0 Then
+      RetornarValorInteiro = Left(pstrNumero, (InStr(1, pstrNumero, ",") - 1))
+   End If
+End Function
+
+Private Function RetornarNumeroPorExtenso(plngValor As Long) As String
+   Dim strTexto As String
+   
+   Dim intValorUnidade As Integer
+   Dim strTextoUnidade As String
+   
+   Dim intValorDezena As Integer
+   Dim strTextoDezena As String
+   
+
+   Select Case plngValor
+      Case "0": strTexto = "ZERO"
       Case "1": strTexto = "UM"
       Case "2": strTexto = "DOIS"
       Case "3": strTexto = "TRES"
@@ -57,23 +95,15 @@ Public Function RetornarPorExtenso(pstrNumero As String) As String
       Case "70": strTexto = "SETENTA"
       Case "80": strTexto = "OITENTA"
       Case "90": strTexto = "NOVENTA"
-      
+      Case Else
+         intValorUnidade = plngValor - CLng(Left(CStr(plngValor), 1) & "0")
+         strTextoUnidade = RetornarNumeroPorExtenso(CStr(intValorUnidade))
+         
+         intValorDezena = plngValor - intValorUnidade
+         strTextoDezena = RetornarNumeroPorExtenso(CStr(intValorDezena))
+         
+         strTexto = strTextoDezena & " e " & strTextoUnidade
    End Select
-
-      
-   RetornarPorExtenso = strTexto & " " & "REAL"
-
-End Function
-
-Private Function RetornarValorCentavos(pstrNumero As String) As Integer
-   If InStr(1, pstrNumero, ",") > 0 Then
-      RetornarValorCentavos = Right(pstrNumero, 2)
-   End If
-End Function
-
-Private Function RetornarValorInteiro(pstrNumero As String) As Long
-   RetornarValorInteiro = pstrNumero
-   If InStr(1, pstrNumero, ",") > 0 Then
-      RetornarValorInteiro = Left(pstrNumero, (InStr(1, pstrNumero, ",") - 1))
-   End If
+   RetornarNumeroPorExtenso = strTexto
+   
 End Function

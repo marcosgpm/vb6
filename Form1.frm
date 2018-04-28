@@ -20,8 +20,18 @@ Option Explicit
 Private Sub Form_Load()
 
    Dim objValorMonetario As New clsValorMonetario
-
-   MsgBox objValorMonetario.RetornarPorExtenso("1")
+   Dim valor As Double
+   Dim i As Integer
+   
+   valor = 0
+   Open App.Path & "\valores.txt" For Output As #5
+   For i = 0 To 9999
+      Print #5, objValorMonetario.RetornarPorExtenso(valor)
+      valor = valor + 0.01
+   Next i
+   Close #5
+   
+   MsgBox "Valores salvos no arquivo " & App.Path & "\valores.txt"
    
    Unload Me
 
